@@ -1,4 +1,11 @@
-import { formatDimensionName, type ScoreSummary } from "@/lib/scoring";
+"use client";
+
+import { useMemo, useState } from "react";
+import {
+  formatDimensionName,
+  getIdealDialoguePath,
+  type ScoreSummary,
+} from "@/lib/scoring";
 import type { Scenario } from "@/types/scenario";
 
 type ResultScreenProps = {
@@ -12,7 +19,9 @@ export function ResultScreen({
   scoreSummary,
   onPlayAgain,
 }: ResultScreenProps) {
+  const [showIdealPath, setShowIdealPath] = useState(false);
   const { decisionBlueprint } = scenario;
+  const idealPath = useMemo(() => getIdealDialoguePath(scenario), [scenario]);
   const shareText =
     `I played The Socratic Analyst, a short BI dialogue game about asking better questions before building dashboards. ` +
     `My result: ${scoreSummary.resultBand.label}. The challenge: turn 'I need a dashboard to be in control' into a decision-ready requirement.`;
@@ -45,8 +54,47 @@ export function ResultScreen({
           >
             Copy share text
           </button>
+          <button
+            className="secondary-button"
+            onClick={() => setShowIdealPath((current) => !current)}
+            type="button"
+          >
+            {showIdealPath ? "Hide ideal path" : "Show ideal path"}
+          </button>
         </div>
       </div>
+      {showIdealPath && (
+        <article className="ideal-path-panel">
+          <div className="ideal-path-heading">
+            <div>
+              <p className="card-kicker">Best possible path</p>
+              <h2>Ideal dialogue transcript</h2>
+            </div>
+            <span>{scenario.maxScore}/{scenario.maxScore}</span>
+          </div>
+          <div className="chat-window">
+            {idealPath.map(({ turn, bestOption }, index) => (
+              <div className="chat-turn" key={turn.id}>
+                <div className="chat-message stakeholder-message">
+                  <span>Stakeholder</span>
+                  <p>{turn.stakeholderSays}</p>
+                </div>
+                <div className="chat-message analyst-message">
+                  <span>Best question +{bestOption.score}</span>
+                  <p>{bestOption.text}</p>
+                </div>
+                <div className="chat-message stakeholder-message response-message">
+                  <span>Response</span>
+                  <p>{bestOption.stakeholderResponse}</p>
+                </div>
+                {index < idealPath.length - 1 && (
+                  <div className="chat-divider" aria-hidden="true" />
+                )}
+              </div>
+            ))}
+          </div>
+        </article>
+      )}
       <div className="result-grid">
         <article className="breakdown-panel">
           <h2>Score breakdown</h2>

@@ -200,6 +200,7 @@ p {
 .learning-goal,
 .feedback-panel,
 .result-hero,
+.ideal-path-panel,
 .breakdown-panel,
 .blueprint-panel {
   background: rgba(255, 253, 250, 0.9);
@@ -491,6 +492,94 @@ p {
 .result-hero {
   display: grid;
   gap: 16px;
+}
+
+.ideal-path-panel {
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+}
+
+.ideal-path-heading {
+  align-items: start;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.ideal-path-heading h2 {
+  margin-bottom: 0;
+}
+
+.ideal-path-heading span {
+  background: var(--primary);
+  border-radius: 999px;
+  color: white;
+  font-weight: 900;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.chat-window {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: grid;
+  gap: 16px;
+  max-height: 620px;
+  overflow: auto;
+  padding: 18px;
+}
+
+.chat-turn {
+  display: grid;
+  gap: 10px;
+}
+
+.chat-message {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: min(92%, 720px);
+  padding: 14px 16px;
+}
+
+.chat-message span {
+  color: var(--muted);
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.chat-message p {
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+.stakeholder-message {
+  background: white;
+  justify-self: start;
+}
+
+.analyst-message {
+  background: rgba(22, 107, 107, 0.1);
+  border-color: rgba(22, 107, 107, 0.24);
+  justify-self: end;
+}
+
+.analyst-message span {
+  color: var(--primary);
+}
+
+.response-message {
+  background: #fbf6f0;
+}
+
+.chat-divider {
+  background: var(--border);
+  height: 1px;
+  margin: 6px 0;
 }
 
 .result-hero h1 {

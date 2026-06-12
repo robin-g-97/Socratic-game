@@ -1,5 +1,6 @@
 import type {
   DialogueOption,
+  DialogueTurn,
   Dimension,
   ResultBand,
   Scenario,
@@ -9,6 +10,11 @@ export type ScoreSummary = {
   totalScore: number;
   dimensionTotals: Record<Dimension, number>;
   resultBand: ResultBand;
+};
+
+export type IdealDialogueTurn = {
+  turn: DialogueTurn;
+  bestOption: DialogueOption;
 };
 
 export function calculateScore(
@@ -42,4 +48,13 @@ export function formatDimensionName(dimension: Dimension): string {
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+export function getIdealDialoguePath(scenario: Scenario): IdealDialogueTurn[] {
+  return scenario.turns.map((turn) => ({
+    turn,
+    bestOption: turn.options.reduce((bestOption, option) =>
+      option.score > bestOption.score ? option : bestOption,
+    ),
+  }));
 }
