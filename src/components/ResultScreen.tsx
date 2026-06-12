@@ -73,12 +73,13 @@ export function ResultScreen({
             <span>{scenario.maxScore}/{scenario.maxScore}</span>
           </div>
           <div className="chat-window">
+            <div className="chat-message stakeholder-message">
+              <span>Stakeholder</span>
+              <p>{scenario.opening}</p>
+            </div>
             {idealPath.map(({ turn, bestOption }, index) => (
               <div className="chat-turn" key={turn.id}>
-                <div className="chat-message stakeholder-message">
-                  <span>Stakeholder</span>
-                  <p>{turn.stakeholderSays}</p>
-                </div>
+                <p className="chat-turn-label">Turn {index + 1}</p>
                 <div className="chat-message analyst-message">
                   <span>Best question +{bestOption.score}</span>
                   <p>{bestOption.text}</p>
@@ -87,9 +88,6 @@ export function ResultScreen({
                   <span>Response</span>
                   <p>{bestOption.stakeholderResponse}</p>
                 </div>
-                {index < idealPath.length - 1 && (
-                  <div className="chat-divider" aria-hidden="true" />
-                )}
               </div>
             ))}
           </div>

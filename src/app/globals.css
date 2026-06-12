@@ -525,22 +525,20 @@ p {
   border: 1px solid var(--border);
   border-radius: 8px;
   display: grid;
-  gap: 16px;
-  max-height: 620px;
-  overflow: auto;
+  gap: 14px;
   padding: 18px;
 }
 
 .chat-turn {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .chat-message {
   border: 1px solid var(--border);
   border-radius: 8px;
-  max-width: min(92%, 720px);
-  padding: 14px 16px;
+  max-width: min(82%, 760px);
+  padding: 12px 14px;
 }
 
 .chat-message span {
@@ -548,13 +546,23 @@ p {
   display: block;
   font-size: 0.75rem;
   font-weight: 900;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   text-transform: uppercase;
 }
 
 .chat-message p {
   color: var(--text);
+  line-height: 1.45;
   margin-bottom: 0;
+}
+
+.chat-turn-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  justify-self: center;
+  margin: 4px 0;
+  text-transform: uppercase;
 }
 
 .stakeholder-message {
@@ -574,12 +582,6 @@ p {
 
 .response-message {
   background: #fbf6f0;
-}
-
-.chat-divider {
-  background: var(--border);
-  height: 1px;
-  margin: 6px 0;
 }
 
 .result-hero h1 {
