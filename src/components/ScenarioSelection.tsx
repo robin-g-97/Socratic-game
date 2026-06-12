@@ -1,12 +1,15 @@
+import type { Translation } from "@/lib/i18n";
 import type { Persona, Scenario } from "@/types/scenario";
 
 type ScenarioSelectionProps = {
+  copy: Translation["scenarioSelection"];
   personas: Persona[];
   scenarios: Scenario[];
   onSelectScenario: (scenarioId: string) => void;
 };
 
 export function ScenarioSelection({
+  copy,
   personas,
   scenarios,
   onSelectScenario,
@@ -24,13 +27,9 @@ export function ScenarioSelection({
   return (
     <section className="screen content-screen">
       <div className="section-heading">
-        <p className="eyebrow">Training personas</p>
-        <h1>Choose a stakeholder challenge</h1>
-        <p>
-          Choose who you want to interview in this training session. Each
-          available challenge has a scripted Socratic dialogue about turning
-          vague stakeholder requests into decision-ready BI requirements.
-        </p>
+        <p className="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+        <p>{copy.description}</p>
       </div>
       <div className="scenario-card-grid">
         {scenarios.map((scenario) => {
@@ -44,13 +43,13 @@ export function ScenarioSelection({
             >
               <div>
                 <p className="card-kicker">
-                  {isAvailable ? "Available" : "Coming soon"}
+                  {isAvailable ? copy.available : copy.comingSoon}
                 </p>
                 <h2>
                   {persona.name}: {persona.role}
                 </h2>
                 <p className="data-maturity">
-                  Data maturity: {persona.dataMaturity}
+                  {copy.dataMaturity}: {persona.dataMaturity}
                 </p>
                 <p>{scenario.subtitle}</p>
               </div>
@@ -60,7 +59,7 @@ export function ScenarioSelection({
                 onClick={() => onSelectScenario(scenario.id)}
                 type="button"
               >
-                {isAvailable ? "Start scenario" : "Coming soon"}
+                {isAvailable ? copy.startScenario : copy.comingSoon}
               </button>
             </article>
           );

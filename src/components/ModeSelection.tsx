@@ -1,40 +1,40 @@
+import type { Translation } from "@/lib/i18n";
+
 type ModeSelectionProps = {
+  copy: Translation["mode"];
   onStartTraining: () => void;
 };
 
-export function ModeSelection({ onStartTraining }: ModeSelectionProps) {
+export function ModeSelection({ copy, onStartTraining }: ModeSelectionProps) {
   return (
     <section className="screen content-screen">
       <div className="section-heading">
-        <p className="eyebrow">Choose a mode</p>
-        <h1>How do you want to train?</h1>
+        <p className="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
       </div>
       <div className="mode-grid">
         <article className="mode-card">
           <div>
-            <p className="card-kicker">Enabled</p>
-            <h2>Training Mode</h2>
-            <p>
-              Choose the strongest Socratic question from curated options and
-              learn the pattern.
-            </p>
+            <p className="card-kicker">{copy.enabled}</p>
+            <h2>{copy.trainingTitle}</h2>
+            <p>{copy.trainingDescription}</p>
           </div>
           <button
             className="primary-button"
             onClick={onStartTraining}
             type="button"
           >
-            Start Training Mode
+            {copy.trainingButton}
           </button>
         </article>
         <article className="mode-card disabled-card">
           <div>
-            <p className="card-kicker">Future feature</p>
-            <h2>Challenge Mode</h2>
-            <p>Write your own questions and receive AI coaching. Coming soon.</p>
+            <p className="card-kicker">{copy.futureFeature}</p>
+            <h2>{copy.challengeTitle}</h2>
+            <p>{copy.challengeDescription}</p>
           </div>
           <button className="secondary-button" disabled type="button">
-            Coming soon
+            {copy.comingSoon}
           </button>
         </article>
       </div>

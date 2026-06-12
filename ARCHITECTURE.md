@@ -130,6 +130,27 @@ The helper:
 
 The UI does not calculate scoring directly. It asks the scoring helper for the result. This keeps the game rules in one place.
 
+## Language Support
+
+Interface translations live in:
+
+```txt
+src/lib/i18n.ts
+```
+
+The current app supports English and Dutch for UI labels, buttons, headings, helper text, and result-screen labels.
+
+The active language is owned by `src/app/page.tsx` and passed down to the screen components as translated copy. This keeps the language switch simple and avoids introducing a full internationalization framework before the app needs routes, URLs, or persisted user preferences.
+
+Scenario and persona content still lives in:
+
+```txt
+src/data/scenarios.ts
+src/data/personas.ts
+```
+
+To fully translate the scripted dialogue later, add localized fields to the scenario/persona data or create locale-specific scenario files. The UI is already prepared to receive translated copy; the next step would be translating the actual training content.
+
 ## Components
 
 Components live in:
@@ -180,4 +201,3 @@ The MVP intentionally does not include:
 - Challenge Mode
 
 Those can be added later when the product needs them.
-

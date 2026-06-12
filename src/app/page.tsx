@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { DialogueScreen } from "@/components/DialogueScreen";
 import { LandingPage } from "@/components/LandingPage";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { ModeSelection } from "@/components/ModeSelection";
 import { ResultScreen } from "@/components/ResultScreen";
 import { ScenarioSelection } from "@/components/ScenarioSelection";
@@ -13,6 +14,7 @@ import {
   scenarios,
 } from "@/data/scenarios";
 import { getPersonaById, personas } from "@/data/personas";
+import { type Locale, translations } from "@/lib/i18n";
 import { calculateScore } from "@/lib/scoring";
 import type { DialogueOption } from "@/types/scenario";
 
@@ -25,6 +27,7 @@ type AppStep =
   | "result";
 
 export default function Home() {
+  const [locale, setLocale] = useState<Locale>("en");
   const [step, setStep] = useState<AppStep>("landing");
   const [selectedOptions, setSelectedOptions] = useState<DialogueOption[]>([]);
   const [selectedScenarioId, setSelectedScenarioId] = useState(
@@ -32,6 +35,7 @@ export default function Home() {
   );
   const activeScenario = getScenarioById(selectedScenarioId);
   const activePersona = getPersonaById(activeScenario.personaId);
+  const t = translations[locale];
 
   const scoreSummary = useMemo(
     () => calculateScore(activeScenario, selectedOptions),
@@ -50,14 +54,23 @@ export default function Home() {
 
   return (
     <main>
+      <LanguageToggle
+        labels={t.language}
+        locale={locale}
+        onChange={setLocale}
+      />
       {step === "landing" && (
-        <LandingPage onStart={() => setStep("mode")} />
+        <LandingPage copy={t.landing} onStart={() => setStep("mode")} />
       )}
       {step === "mode" && (
-        <ModeSelection onStartTraining={() => setStep("scenario-selection")} />
+        <ModeSelection
+          copy={t.mode}
+          onStartTraining={() => setStep("scenario-selection")}
+        />
       )}
       {step === "scenario-selection" && (
         <ScenarioSelection
+          copy={t.scenarioSelection}
           personas={personas}
           scenarios={scenarios}
           onSelectScenario={(scenarioId) => {
@@ -69,6 +82,7 @@ export default function Home() {
       )}
       {step === "intro" && (
         <ScenarioIntro
+          copy={t.intro}
           scenario={activeScenario}
           persona={activePersona}
           onStart={startDialogue}
@@ -77,6 +91,7 @@ export default function Home() {
       )}
       {step === "dialogue" && (
         <DialogueScreen
+          copy={t.dialogue}
           scenario={activeScenario}
           persona={activePersona}
           score={scoreSummary.totalScore}
@@ -89,6 +104,7 @@ export default function Home() {
       )}
       {step === "result" && (
         <ResultScreen
+          copy={t.result}
           scenario={activeScenario}
           scoreSummary={scoreSummary}
           onPlayAgain={restartGame}

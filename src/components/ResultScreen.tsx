@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { Translation } from "@/lib/i18n";
 import {
   formatDimensionName,
   getIdealDialoguePath,
@@ -9,12 +10,14 @@ import {
 import type { Scenario } from "@/types/scenario";
 
 type ResultScreenProps = {
+  copy: Translation["result"];
   scenario: Scenario;
   scoreSummary: ScoreSummary;
   onPlayAgain: () => void;
 };
 
 export function ResultScreen({
+  copy,
   scenario,
   scoreSummary,
   onPlayAgain,
@@ -23,21 +26,20 @@ export function ResultScreen({
   const { decisionBlueprint } = scenario;
   const idealPath = useMemo(() => getIdealDialoguePath(scenario), [scenario]);
   const shareText =
-    `I played The Socratic Analyst, a short BI dialogue game about asking better questions before building dashboards. ` +
-    `My result: ${scoreSummary.resultBand.label}. The challenge: turn 'I need a dashboard to be in control' into a decision-ready requirement.`;
+    `${copy.shareTextPrefix} ${copy.shareTextResult}: ${scoreSummary.resultBand.label}. ${copy.shareTextChallenge}`;
 
   async function copyShareText() {
     try {
       await navigator.clipboard.writeText(shareText);
     } catch {
-      window.prompt("Copy your share text:", shareText);
+      window.prompt(copy.copyPrompt, shareText);
     }
   }
 
   return (
     <section className="screen content-screen result-screen">
       <div className="result-hero">
-        <p className="eyebrow">Result</p>
+        <p className="eyebrow">{copy.eyebrow}</p>
         <h1>{scoreSummary.resultBand.label}</h1>
         <p className="score-large">
           {scoreSummary.totalScore}<span>/{scenario.maxScore}</span>
@@ -45,21 +47,21 @@ export function ResultScreen({
         <p>{scoreSummary.resultBand.feedback}</p>
         <div className="button-row">
           <button className="primary-button" onClick={onPlayAgain} type="button">
-            Play again
+            {copy.playAgain}
           </button>
           <button
             className="secondary-button"
             onClick={copyShareText}
             type="button"
           >
-            Copy share text
+            {copy.copyShareText}
           </button>
           <button
             className="secondary-button"
             onClick={() => setShowIdealPath((current) => !current)}
             type="button"
           >
-            {showIdealPath ? "Hide ideal path" : "Show ideal path"}
+            {showIdealPath ? copy.hideIdealPath : copy.showIdealPath}
           </button>
         </div>
       </div>
@@ -67,25 +69,29 @@ export function ResultScreen({
         <article className="ideal-path-panel">
           <div className="ideal-path-heading">
             <div>
-              <p className="card-kicker">Best possible path</p>
-              <h2>Ideal dialogue transcript</h2>
+              <p className="card-kicker">{copy.bestPath}</p>
+              <h2>{copy.idealTranscript}</h2>
             </div>
             <span>{scenario.maxScore}/{scenario.maxScore}</span>
           </div>
           <div className="chat-window">
             <div className="chat-message stakeholder-message">
-              <span>Stakeholder</span>
+              <span>{copy.stakeholder}</span>
               <p>{scenario.opening}</p>
             </div>
             {idealPath.map(({ turn, bestOption }, index) => (
               <div className="chat-turn" key={turn.id}>
-                <p className="chat-turn-label">Turn {index + 1}</p>
+                <p className="chat-turn-label">
+                  {copy.turn} {index + 1}
+                </p>
                 <div className="chat-message analyst-message">
-                  <span>Best question +{bestOption.score}</span>
+                  <span>
+                    {copy.bestQuestion} +{bestOption.score}
+                  </span>
                   <p>{bestOption.text}</p>
                 </div>
                 <div className="chat-message stakeholder-message response-message">
-                  <span>Response</span>
+                  <span>{copy.response}</span>
                   <p>{bestOption.stakeholderResponse}</p>
                 </div>
               </div>
@@ -95,7 +101,7 @@ export function ResultScreen({
       )}
       <div className="result-grid">
         <article className="breakdown-panel">
-          <h2>Score breakdown</h2>
+          <h2>{copy.scoreBreakdown}</h2>
           <div className="dimension-list">
             {scenario.dimensions.map((dimension) => (
               <div className="dimension-row" key={dimension}>
@@ -106,36 +112,36 @@ export function ResultScreen({
           </div>
         </article>
         <article className="blueprint-panel">
-          <h2>Decision blueprint</h2>
+          <h2>{copy.decisionBlueprint}</h2>
           <dl>
             <div>
-              <dt>Original request</dt>
+              <dt>{copy.originalRequest}</dt>
               <dd>{decisionBlueprint.originalRequest}</dd>
             </div>
             <div>
-              <dt>Clarified need</dt>
+              <dt>{copy.clarifiedNeed}</dt>
               <dd>{decisionBlueprint.clarifiedNeed}</dd>
             </div>
             <div>
-              <dt>Primary decision</dt>
+              <dt>{copy.primaryDecision}</dt>
               <dd>{decisionBlueprint.primaryDecision}</dd>
             </div>
             <div>
-              <dt>User</dt>
+              <dt>{copy.user}</dt>
               <dd>{decisionBlueprint.user}</dd>
             </div>
             <div>
-              <dt>Suggested purpose</dt>
+              <dt>{copy.suggestedPurpose}</dt>
               <dd>{decisionBlueprint.suggestedPurpose}</dd>
             </div>
             <div>
-              <dt>Better dashboard title</dt>
+              <dt>{copy.betterDashboardTitle}</dt>
               <dd>{decisionBlueprint.betterDashboardTitle}</dd>
             </div>
           </dl>
           <div className="blueprint-lists">
             <div>
-              <h3>Key signals</h3>
+              <h3>{copy.keySignals}</h3>
               <ul>
                 {decisionBlueprint.keySignals.map((signal) => (
                   <li key={signal}>{signal}</li>
@@ -143,7 +149,7 @@ export function ResultScreen({
               </ul>
             </div>
             <div>
-              <h3>Action categories</h3>
+              <h3>{copy.actionCategories}</h3>
               <div className="tag-row">
                 {decisionBlueprint.actionCategories.map((category) => (
                   <span key={category}>{category}</span>
